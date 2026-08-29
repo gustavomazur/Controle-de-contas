@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Env (mantém .env.example versionado) ###
+envs/.env.local
+envs/.env.test
+!envs/.env.example

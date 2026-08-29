@@ -1,10 +1,16 @@
 services:
-  mysql:
-    image: 'mysql:latest'
-    environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+  app:
+    build: .
+    image: controle-horas-app
+    container_name: controle-horas-app
+    restart: on-failure
+    env_file:
+      - envs/.env.local
     ports:
-      - '3306'
+      - "8080:8080"
+    networks:
+      - controle-horas-network
+
+networks:
+  controle-horas-network:
+    driver: bridge

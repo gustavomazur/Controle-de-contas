@@ -1,0 +1,53 @@
+#esse projeto vai ser para cadastrar horas
+
+-Vai usar java JDK 21 Spring Boot
+-O projeto mander do jeito que esta organizado o mapper dto controller Repository Service
+-Mander o o estilo de codigo adicionar teste unitario em cada service é controller
+-Entidade deve der os seguintes atributos
+  *Descrição
+  *Horas
+  *Data
+  *Projeto
+  *Equipe
+
+Pessoa que vai cadastrar vai colocar descrição oque estava fazendo exemplo
+estou estudando MYSQL
+Horas pessoa vai colocar hora que gastou estudando
+1;30
+Data Pessoa vai colocar a data que estudou exemplo
+22/08/2026
+Projeto pessoa vai colocar o projeto que ela está
+exemplo Horizonte
+*Equipe
+ela vai colocar a equipe que ela esta Exemplo
+Time Alfa
+
+A pessoa pode criar um projeto È quanto ela for criar ela coloca
+Nome do projeto descrição do projeto descrição não é obrigadorio
+é depois com projeto criado ela pode pegar o nome de outro usario é adicionar naquele projeto
+é outro usuario devera ver notificação ai com isso ele vai aceitar é aceitando ele pega e consegue ver o projeto
+no menu que esta escrito projetos
+exemplo
+MENU
+Projetos
+    -ALFA
+
+O criado do projeto consegue criar equipes é colocar Equipe A Equipe B que seria os times né
+ai consegue colocar os usaarios que estão no projeto em cada equipe certinha
+é ai esses projetos eles consegue fazer as mesma coisa
+Pessoa que vai cadastrar vai colocar descrição oque estava fazendo exemplo
+estou estudando MYSQL
+Horas pessoa vai colocar hora que gastou estudando
+1;30
+Data Pessoa vai colocar a data que estudou exemplo
+22/08/2026
+Projeto pessoa vai colocar o projeto que ela está
+exemplo Horizonte
+*Equipe
+ela vai colocar a equipe que ela esta Exemplo
+Time Alfa
+
+O criador do Projeto vai ver oque cada um estudou oque cada um esta fazendo quanto tempo gastou pra fazer as task
+quanto tempo gastdou pra restudar
+quanto tempo o time gastou pra execultar tal tarefa para conseguir trabalhar com mais agilidaade com o time
+
