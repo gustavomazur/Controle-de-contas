@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contas — Painel</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    document.documentElement.setAttribute(
+      "data-theme",
+      localStorage.getItem("theme") || "dark"
+    );
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="page-title">Início</h1>
+    <div class="topbar-actions">
+      <button id="theme-toggle" class="btn btn-ghost" aria-label="Alternar tema">
+        Modo claro
+      </button>
+      <button id="menu-toggle" class="icon-btn" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <div id="overlay" class="overlay"></div>
+
+  <nav id="drawer" class="drawer">
+    <div class="drawer-header">Menu</div>
+    <button class="nav-item active" data-page="home" data-title="Início">Início</button>
+    <button class="nav-item" data-page="saldo" data-title="Saldo">Saldo</button>
+    <button class="nav-item" data-page="dividas" data-title="Dívidas">Dívidas</button>
+    <button class="nav-item" data-page="salarios" data-title="Salários">Salários</button>
+  </nav>
+
+  <main class="content">
+    <section id="page-home" class="page active">
+      <div class="welcome">
+        <h2>Que bom ver você aqui!</h2>
+        <p>Este é o seu painel de contas. Use o menu (☰) no topo para alternar
+           entre <strong>Saldo</strong>, <strong>Dívidas</strong> e
+           <strong>Salários</strong>.</p>
+        <div class="welcome-actions">
+          <button class="btn btn-primary" data-goto="saldo">Ver saldo</button>
+          <button class="btn btn-ghost" data-goto="dividas">Minhas dívidas</button>
+          <button class="btn btn-ghost" data-goto="salarios">Meus salários</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-saldo" class="page">
+      <h2>Saldo</h2>
+      <div class="saldo-grid">
+        <div class="saldo-item">
+          <span class="label">Salários</span>
+          <strong id="total-salario" class="value positive">R$ 0,00</strong>
+        </div>
+        <div class="saldo-item">
+          <span class="label">Dívidas</span>
+          <strong id="total-divida" class="value negative">R$ 0,00</strong>
+        </div>
+        <div class="saldo-item">
+          <span class="label">Saldo</span>
+          <strong id="saldo" class="value">R$ 0,00</strong>
+        </div>
+      </div>
+      <button id="refresh" class="btn btn-primary">Atualizar</button>
+    </section>
+
+    <section id="page-dividas" class="page">
+      <h2>Dívidas</h2>
+      <form id="form-divida" class="form">
+        <input name="title" type="text" placeholder="Título (ex: faculdade)" required />
+        <input name="valor" type="number" step="0.01" min="0" placeholder="Valor" required />
+        <button type="submit" class="btn btn-primary">Adicionar</button>
+      </form>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="col-id">#</th>
+              <th>Título</th>
+              <th class="col-valor">Valor</th>
+              <th class="col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-dividas"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="page-salarios" class="page">
+      <h2>Salários</h2>
+      <form id="form-salario" class="form">
+        <input name="title" type="text" placeholder="Título (ex: seguro desemprego)" required />
+        <input name="valor" type="number" step="0.01" min="0" placeholder="Valor" required />
+        <button type="submit" class="btn btn-primary">Adicionar</button>
+      </form>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="col-id">#</th>
+              <th>Título</th>
+              <th class="col-valor">Valor</th>
+              <th class="col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-salarios"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

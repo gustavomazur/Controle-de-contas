@@ -1,0 +1,128 @@
+# Contas — API + Frontend
+
+FRONT END desenvolvida com IA BACKEND desenvolvido por mim
+
+API em **FastAPI** para gerenciar dívidas e salários, com um frontend em
+**HTML + CSS + JavaScript puro** (sem build) que consome a API.
+
+```
+contas/
+├── app/                  # API FastAPI
+│   ├── main.py           # cria o app, registra CORS e os routers
+│   ├── models.py         # "banco de dados" em memória
+│   ├── schemas.py        # modelos Pydantic
+│   └── routers/
+│       ├── divida.py     # /divida
+│       └── salario.py    # /salario
+├── frontend/             # Frontend que consome a API
+│   ├── index.html
+│   ├── styles.css
+│   └── app.js
+├── requirements.txt
+└── README.md
+```
+
+## Pré-requisitos
+
+- Python 3.10+
+- Um navegador moderno
+
+## 1. Rodar a API
+
+A partir da pasta `contas`:
+
+```bash
+# (opcional, recomendado) criar e ativar o ambiente virtual
+python3 -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+
+# instalar as dependências
+pip install -r requirements.txt
+
+# subir o servidor
+python -m uvicorn app.main:app --reload
+```
+
+A API fica disponível em `http://localhost:8000`.
+
+- Documentação interativa (Swagger): http://localhost:8000/docs
+- Documentação alternativa (ReDoc): http://localhost:8000/redoc
+
+## 2. Rodar o Frontend
+
+O frontend é estático, então basta servi-lo com qualquer servidor HTTP.
+Escolha **uma** das opções abaixo (as duas servem a mesma coisa).
+
+**Opção A** — a partir da pasta `contas`, use `--directory frontend`:
+
+```bash
+python3 -m http.server 5500 --directory frontend
+```
+
+**Opção B** — entre na pasta `frontend` e rode sem `--directory`:
+
+```bash
+cd frontend
+python3 -m http.server 5500
+```
+
+Depois abra no navegador: **http://localhost:5500**
+
+> ⚠️ Cuidado para não misturar as duas: se você já estiver dentro de
+> `frontend/` e usar `--directory frontend`, o servidor vai procurar
+> `frontend/frontend`, que não existe, e retornar **404 (File not found)**.
+
+> Também é possível abrir o arquivo `frontend/index.html` direto no
+> navegador, mas servir por HTTP evita restrições de `file://`.
+
+O frontend aponta automaticamente para a API em `http://localhost:8000`.
+Se você subir a API em outro endereço, altere a constante `DEFAULT_API`
+no início de `frontend/app.js`.
+
+## Endpoints da API
+
+| Método | Rota                       | Descrição                        |
+| ------ | -------------------------- | -------------------------------- |
+| GET    | `/divida/`                 | Lista dívidas e o total          |
+| POST   | `/divida/`                 | Cria uma dívida                  |
+| PUT    | `/divida/{id}`             | Atualiza uma dívida              |
+| GET    | `/salario/`                | Lista salários e o total         |
+| POST   | `/salario/`                | Cria um salário                  |
+| GET    | `/salario/saldo`           | Retorna totais e o saldo         |
+| PUT    | `/salario/{id}`            | Atualiza um salário              |
+
+### Exemplos rápidos (curl)
+
+```bash
+# criar uma dívida
+curl -X POST http://localhost:8000/divida/ \
+  -H "Content-Type: application/json" \
+  -d '{"title": "internet", "valor": 120}'
+
+# criar um salário
+curl -X POST http://localhost:8000/salario/ \
+  -H "Content-Type: application/json" \
+  -d '{"title": "freelance", "valor": 500}'
+
+# ver o saldo
+curl http://localhost:8000/salario/saldo
+```
+
+## O que o frontend faz
+
+- Tela inicial de boas-vindas com atalhos.
+- **Menu sanduíche** (☰) no topo (à direita) para navegar entre as páginas:
+  **Início**, **Saldo**, **Dívidas** e **Salários**.
+- Botão de **tema claro/escuro** no topo; a preferência fica salva no navegador.
+- Página **Saldo**: total de salários, total de dívidas e o saldo.
+- Páginas **Dívidas** e **Salários**: formulário para adicionar e uma
+  tabela com **#**, **Título** e **Valor** bem visíveis.
+- **Edição inline**: clique em *Editar*, altere os campos na própria linha
+  e confirme em *Salvar* (ou `Enter`); *Cancelar*/`Esc` descarta.
+
+## Observações
+
+- Os dados ficam **em memória** (`app/models.py`); ao reiniciar a API tudo
+  volta ao estado inicial.
+- O CORS está liberado para todas as origens em `app/main.py` — adequado
+  para desenvolvimento. Em produção, restrinja `allow_origins`.
