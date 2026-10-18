@@ -1,7 +1,15 @@
 # Contas — API + Frontend
 
-FRONT END desenvolvida com IA BACKEND desenvolvido por mim
-AINDA falta fazer os test
+Esse projeto foi desenvolvido para resolver um problema pessoal: organizar meu dinheiro. Eu até utilizava planilhas, mas, com o tempo, acabava me perdendo nas informações e esquecendo de atualizá-las.
+
+Criar esse projeto me trouxe muita alegria, porque desenvolvi uma solução para uma dificuldade real do meu dia a dia. Agora, posso registrar minhas contas diretamente no sistema, separando-as por categorias ou cadastrando novas informações.
+
+Atualmente, os dados ficam armazenados em memória, mas pretendo aprimorar o projeto com o tempo e, futuramente, talvez fazer o deploy. Por enquanto, estou aproveitando a aplicação localmente e aprendendo cada vez mais com ela.
+
+
+- FRONT END desenvolvida com IA
+-  BACKEND desenvolvido por mim
+
 
 API em **FastAPI** para gerenciar dívidas e salários, com um frontend em
 **HTML + CSS + JavaScript puro** (sem build) que consome a API.
