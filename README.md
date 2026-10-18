@@ -1,6 +1,7 @@
 # Contas — API + Frontend
 
 FRONT END desenvolvida com IA BACKEND desenvolvido por mim
+AINDA falta fazer os test
 
 API em **FastAPI** para gerenciar dívidas e salários, com um frontend em
 **HTML + CSS + JavaScript puro** (sem build) que consome a API.
