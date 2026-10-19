@@ -9,7 +9,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.SalarioCreate)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.SalarioResponse)
 def create_salario(salario: schemas.SalarioCreate):
     
     new_salario = salario.model_dump()
@@ -26,7 +26,8 @@ def get_salario(response: Response):
 
     lista_salario = models.my_db_salario
 
-    total_somado = sum(salario["valor"] for salario in lista_salario)
+    total_somado = sum(salario["valor"]
+                    for salario in lista_salario)
 
     response.headers["X-Total-Salario"] = str(total_somado)
 
@@ -42,10 +43,9 @@ def get_saldo(response: Response):
     total_salario = sum(salario["valor"] for salario in models.my_db_salario)
     total_divida = sum(divida["valor"] for divida in models.my_db_divida)
     saldo = total_salario - total_divida
-    return {
-        "total_slario": total_salario,
-        "total_divida": total_divida,
-        "saldo": saldo
+    return {"total_salario": total_salario,
+            "total_divida": total_divida,
+            "saldo": saldo
     }
 
 
