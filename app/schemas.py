@@ -36,11 +36,11 @@ class SalarioResponse(BaseModel):
         from_attributes = True
 
 class SalarioListResponse(BaseModel):
-    salario: list[DividaResponse]
+    salario: list[SalarioResponse]
     total: float
 
 class SaldoResponse(BaseModel):
-    total_slario: float
+    total_salario: float
     total_divida: float
     saldo: float
     
