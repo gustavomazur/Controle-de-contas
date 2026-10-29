@@ -70,7 +70,7 @@ function goTo(page) {
 
 /* ---------------- Tabelas ---------------- */
 
-function renderTable(tbodyId, items, emptyText, onSave) {
+function renderTable(tbodyId, items, emptyText, onSave, onDelete) {
   const tbody = $(tbodyId);
   tbody.innerHTML = "";
   if (!items || items.length === 0) {
@@ -84,17 +84,17 @@ function renderTable(tbodyId, items, emptyText, onSave) {
     return;
   }
   for (const item of items) {
-    tbody.appendChild(makeRow(item, onSave));
+    tbody.appendChild(makeRow(item, onSave, onDelete));
   }
 }
 
-function makeRow(item, onSave) {
+function makeRow(item, onSave, onDelete) {
   const tr = document.createElement("tr");
-  showViewRow(tr, item, onSave);
+  showViewRow(tr, item, onSave, onDelete);
   return tr;
 }
 
-function showViewRow(tr, item, onSave) {
+function showViewRow(tr, item, onSave, onDelete) {
   tr.innerHTML = "";
 
   const idTd = document.createElement("td");
@@ -115,14 +115,22 @@ function showViewRow(tr, item, onSave) {
   const editBtn = document.createElement("button");
   editBtn.className = "mini-btn";
   editBtn.textContent = "Editar";
-  editBtn.addEventListener("click", () => showEditRow(tr, item, onSave));
-  box.appendChild(editBtn);
+  editBtn.addEventListener("click", () => showEditRow(tr, item, onSave, onDelete));
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "mini-btn danger";
+  deleteBtn.textContent = "Excluir";
+  deleteBtn.addEventListener("click", () => {
+    if (confirm(`Excluir "${item.title}"?`)) onDelete(item);
+  });
+
+  box.append(editBtn, deleteBtn);
   actionsTd.appendChild(box);
 
   tr.append(idTd, titleTd, valorTd, actionsTd);
 }
 
-function showEditRow(tr, item, onSave) {
+function showEditRow(tr, item, onSave, onDelete) {
   tr.innerHTML = "";
 
   const idTd = document.createElement("td");
@@ -168,18 +176,18 @@ function showEditRow(tr, item, onSave) {
     }
     try {
       await onSave(item, { title, valor });
-      showViewRow(tr, { ...item, title, valor }, onSave);
+      showViewRow(tr, { ...item, title, valor }, onSave, onDelete);
     } catch (err) {
       toast(`Erro ao salvar: ${err.message}`, "error");
     }
   }
 
   saveBtn.addEventListener("click", commit);
-  cancelBtn.addEventListener("click", () => showViewRow(tr, item, onSave));
+  cancelBtn.addEventListener("click", () => showViewRow(tr, item, onSave, onDelete));
   for (const input of [titleInput, valorInput]) {
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") commit();
-      if (e.key === "Escape") showViewRow(tr, item, onSave);
+      if (e.key === "Escape") showViewRow(tr, item, onSave, onDelete);
     });
   }
 
@@ -194,7 +202,7 @@ function showEditRow(tr, item, onSave) {
 
 async function carregarSaldo() {
   const saldo = await api("/salario/saldo");
-  $("total-salario").textContent = money(saldo.total_slario);
+  $("total-salario").textContent = money(saldo.total_salario);
   $("total-divida").textContent = money(saldo.total_divida);
   const el = $("saldo");
   el.textContent = money(saldo.saldo);
@@ -203,12 +211,12 @@ async function carregarSaldo() {
 
 async function carregarDividas() {
   const data = await api("/divida/");
-  renderTable("tbody-dividas", data.dividas, "Nenhuma dívida cadastrada.", salvarDivida);
+  renderTable("tbody-dividas", data.dividas, "Nenhuma dívida cadastrada.", salvarDivida, excluirDivida);
 }
 
 async function carregarSalarios() {
   const data = await api("/salario/");
-  renderTable("tbody-salarios", data.salario, "Nenhum salário cadastrado.", salvarSalario);
+  renderTable("tbody-salarios", data.salario, "Nenhum salário cadastrado.", salvarSalario, excluirSalario);
 }
 
 async function salvarDivida(item, dados) {
@@ -227,6 +235,26 @@ async function salvarSalario(item, dados) {
   });
   toast("Salário atualizado.", "success");
   await carregarSaldo();
+}
+
+async function excluirDivida(item) {
+  try {
+    await api(`/divida/${item.id}`, { method: "DELETE" });
+    toast("Dívida excluída.", "success");
+    await recarregar();
+  } catch (err) {
+    toast(`Erro ao excluir: ${err.message}`, "error");
+  }
+}
+
+async function excluirSalario(item) {
+  try {
+    await api(`/salario/${item.id}`, { method: "DELETE" });
+    toast("Salário excluído.", "success");
+    await recarregar();
+  } catch (err) {
+    toast(`Erro ao excluir: ${err.message}`, "error");
+  }
 }
 
 async function recarregar() {

@@ -403,6 +403,16 @@ body {
   color: var(--on-primary);
 }
 
+.mini-btn.danger {
+  border-color: var(--negative);
+  color: var(--negative);
+}
+
+.mini-btn.danger:hover {
+  background: var(--negative);
+  color: #ffffff;
+}
+
 .edit-input {
   width: 100%;
   background: var(--bg);
